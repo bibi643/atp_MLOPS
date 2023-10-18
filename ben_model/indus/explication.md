@@ -61,3 +61,22 @@ Tu sais juste qu'il s'agit d'une classification binaire.
 
 
 
+# Remarque sur mon code
+
+On peut critiquer mon script feature_eng.py
+
+En effet, si on utilise directement mon code pour des nouvelles données à prédire.
+Nous devons recalculer le standartScaler() & FrequenceEncoding() pour chaque nouveau jeu de données.
+
+Ce n'est pas optimal!
+
+**Idéalement il faudrait stocker les valeurs moyennes et écart type du standart scaler utilisé pour l'entrainement du model**
+
+Pour rappel :
+StandartScaler formule
+Z = (X_train - μ) / σ
+
+On devrait garder la valeur μ & σ du jeu train et l'appliquer à X_new_train.
+Et seulement recalculer μ & σ si les performances du modèle se dégragde suite à un drift des données
+
+(j'ai pas encore fait ca car j'ai la flemme :)
