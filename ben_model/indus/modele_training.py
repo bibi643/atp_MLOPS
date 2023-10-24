@@ -5,8 +5,8 @@ def train_logistic_regression_model(X_train, X_test, y_train, y_test, model):
     
     # Normalisez les données en utilisant StandardScaler
     scaler = StandardScaler()
-    X_train = scaler.fit_transform(X_train)
-    X_test = scaler.transform(X_test)
+    #X_train = scaler.fit_transform(X_train)
+    #X_test = scaler.transform(X_test)
     
     # Entraînez le modèle sur les données d'entraînement
     model.fit(X_train, y_train)
