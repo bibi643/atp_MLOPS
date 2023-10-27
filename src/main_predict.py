@@ -21,7 +21,9 @@ test = preprocess_data(df)
 print('output preprocess:', test.shape)
 
 #Select the player with API input
-#test.query('p1_Name=={} and p2_Name={} and date ={}')
+
+#test.query('p1_Name=={} and p2_Name={} and date ={}'.format())
+
 
 
 
