@@ -1,0 +1,54 @@
+# @format
+
+name: Integration continue
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        # Vérifie si le nouveau fichier a été ajouté au dépôt. Si aucun nouveau fichier, pas d'exécution de l'action.
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            # Vérifie si de nouveaux fichiers ont été ajoutés au dépôt.L'option -z test si le retour est vide. L'option --porcelain renvoie dans un format facile a analyser par des scripts.
+            - name: Check for new files
+              run: |
+                  if [ -z "$(git status --porcelain)" ]; then
+                      echo "No new files found."
+                      exit 0
+                  fi
+
+            # Utilise l'action appleboy/ssh-action@v1 pour se connecter à la machine virtuelle. Ajouter clé SSH privée et l'hôte SSH dans les secrets du dépôt.
+            - name: Connect to VM
+              uses: appleboy/ssh-action@v2
+              with:
+                  ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  path: /my-app
+
+            # Récupèration des modifications du dépôt GitHub.
+            - name: Git Pull
+              run: |
+                  ssh ${{ secrets.SSH_HOST }} "cd /from_github/my-app && git pull"
+
+            # Redémarre l'application grâce à la commande sudo systemctl restart my-app
+            - name: Reload Application
+              run: |
+                  ssh ${{ secrets.SSH_HOST }} "sudo systemctl restart my-app"
+
+            # Journalise les résultats de l'action.
+            - name: Log results
+              run: |
+                  echo "Action completed successfully."
+
+secrets:
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} # clé SSH privée
+    SSH_HOST: ${{ secrets.SSH_HOST }} #adresse machine virtuelle
+    SSH_USERNAME: ubuntu
+    SSH_PORT: 22
+    SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }} #fichier .pem
