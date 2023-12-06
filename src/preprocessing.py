@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 #Problem
-from utile import target, keeping_col
+from src.utile import target, keeping_col
 
 
 #Fonction pour randomiser les joueurs
