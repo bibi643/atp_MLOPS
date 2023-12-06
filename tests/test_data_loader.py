@@ -54,6 +54,4 @@ def test_preprocess_data(sample_data_csv ):
     assert all(data.columns == col_post_preprocessing)
 
 
-import pytest
-from your_model_module import train_model, evaluate_model
 
