@@ -1,10 +1,10 @@
 # Package
 
-from data_loader import load_data
-from utile import path_db, log_separator
-from preprocessing import preprocess_data
-from feature_eng import feature_eng, feature_eng_predict
-from model import LogisticRegressionHandler
+from src.data_loader import load_data
+from src.utile import path_db, log_separator
+from src.preprocessing import preprocess_data
+from src.feature_eng import feature_eng, feature_eng_predict
+from src.model import LogisticRegressionHandler
 
 
 
