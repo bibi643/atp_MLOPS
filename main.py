@@ -1,17 +1,18 @@
 # Package
 
-from src.data_loader import load_data
+from src.data_loader import DataHandler
 from src.utile import path_db, log_separator
 from src.preprocessing import preprocess_data
 from src.feature_eng import feature_eng
 
 from src.model import LogisticRegressionHandler
 
-
+#Init 
+data_handler = DataHandler()
 
 # 01 Import data
 print('Lancement du code 01: data_loader.py')
-df = load_data(path_db)
+df = data_handler.load_data()
 print('taille du dataframe:', df.shape)
 log_separator()
 
