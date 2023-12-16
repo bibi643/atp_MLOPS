@@ -18,6 +18,7 @@ import uvicorn
 
 #from data_loader import load_data
 from feature_eng import feature_eng_predict
+from data_loader import DataHandler
 from model import LogisticRegressionHandler
 from pydantic import BaseModel
 from fastapi import Depends, FastAPI, HTTPException, status, Body, Request
@@ -29,6 +30,7 @@ import time
 from admin_func import get_current_admin
 from user_func import UserSchema, check_user, token_response, sign_jwt, decode_jwt, JWTBearer
 from data_bases import data_preprocessed, player_df_db,tournois_df_db
+from preprocessing import preprocess_data
 
 
 
@@ -162,7 +164,7 @@ def new_game_pred(date:str=Query('YYYY-MM-DD'), player1:  str| None='Jarry N.', 
         nd=pd.DataFrame.from_records(specific_game)
         x_new=feature_eng_predict(nd)
         lrh=LogisticRegressionHandler()
-        model = lrh.load_model('./atp_logistic_model.pkl')
+        model = lrh.load_model('/File_Data_Volume/atp_logistic_model.pkl')
         if model.predict(x_new.head(5))==1 :
 
             winner = '1'
@@ -178,6 +180,46 @@ def new_game_pred(date:str=Query('YYYY-MM-DD'), player1:  str| None='Jarry N.', 
         return {'Winner': winner,
             'Nom': nom,
             'Cote': cote}
+
+
+
+@api.get('/new_prediction2',tags=['Predictions'],dependencies=[Depends(JWTBearer())])
+def new_game_pred(date:str=Query('YYYY-MM-DD'), player1:  str| None='Jarry N.', player2:str| None='Zeballos H.'):
+    """Return the game between 2 players on a specific date"""
+    #player1=player1.upper()
+    #player2=player2.upper()
+    #data_handler=DataHandler()
+    df_preprocessed= data_preprocessed()
+    specific_game=df_preprocessed[((df_preprocessed['p1_Name']==player1) | (df_preprocessed['p2_Name']==player1))&((df_preprocessed['p1_Name']==player2) | (df_preprocessed['p2_Name']==player2))&(df_preprocessed['date']==date)]
+    specific_game=specific_game.to_dict('records')
+   
+    if specific_game == []:
+        raise ValueError('Wrong date or players.')
+    else:
+        nd=pd.DataFrame.from_records(specific_game)
+        x_new=feature_eng_predict(nd)
+        lrh=LogisticRegressionHandler()
+        model = lrh.load_model('/File_Data_Volume/atp_logistic_model.pkl')
+        if model.predict(x_new.head(5))==1 : #Before I put 5 instead of 1
+
+            winner = '1'
+            nom = nd.p1_Name
+            cote = nd.p1_b365
+
+        else:
+            
+            winner = '2'
+            nom = nd.p2_Name
+            cote = nd.p2_b365
+
+        return {'Winner': winner,
+            'Nom': nom,
+            'Cote': cote}
+
+
+  
+
+
 
 
     

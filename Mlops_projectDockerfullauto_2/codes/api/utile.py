@@ -29,3 +29,7 @@ target='winner'
 def to_pandas(data, colnames = None):
     temp = pd.DataFrame(data, columns=colnames)
     return(temp)
+
+def log_separator():
+    print("-" * 80)
+

@@ -2,7 +2,8 @@
 
 #IMPORT THE PACKAGES
 import pandas as pd
-from data_loader import load_data
+#from data_loader import load_data
+from data_loader import DataHandler
 
 from preprocessing import preprocess_data
 
@@ -17,8 +18,9 @@ from preprocessing import preprocess_data
 
 #LOAD THE DATA
 def data_preprocessed():
-
-    df=load_data('atp_data.csv')
+    data_handler = DataHandler()
+    df= data_handler.read_from_volume()
+    #df=load_data('atp_data.csv')
     df_preprocessed=preprocess_data(df)
     return df_preprocessed
 
@@ -26,7 +28,9 @@ def data_preprocessed():
 
 #LOAD THE DATA
 def player_df_db():
-    df=load_data('atp_data.csv')
+    data_handler = DataHandler()
+    df= data_handler.read_from_volume()
+    #df=load_data('atp_data.csv')
     df_preprocessed=preprocess_data(df)
 
     #Player db
@@ -50,7 +54,9 @@ def player_df_db():
 
 
 def tournois_df_db():
-    df=load_data('atp_data.csv')
+    data_handler = DataHandler()
+    df= data_handler.read_from_volume()
+    #df=load_data('atp_data.csv')
     df_preprocessed=preprocess_data(df)
     tournois_df=df_preprocessed[['location','date','tournament','series','surface']]
     tournois_df=tournois_df.groupby(by=['tournament']).first()
