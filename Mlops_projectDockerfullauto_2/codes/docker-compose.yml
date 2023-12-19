@@ -1,13 +1,17 @@
 version: "3.9"
 services:
   data_collection:
-    image: data_collection_image:latest
+    build: 
+      context: ./Data_collection
+      dockerfile: Dockerfile
     container_name: data_collection_container
     volumes:
       - ./File_Data_Volume:/File_Data_Volume
 
   model_training:
-    image: model_training_image:latest
+    build: 
+      context: ./Model_training
+      dockerfile: Dockerfile
     container_name: model_training_container
     volumes:
       - ./File_Data_Volume:/File_Data_Volume
@@ -15,7 +19,9 @@ services:
       - data_collection
 
   api:
-    image: api_image:latest
+    build:
+      context: ./api
+      dockerfile: Dockerfile
     container_name: api_container
     volumes:
       - "./File_Data_Volume:/File_Data_Volume"
