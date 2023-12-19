@@ -1,27 +1,3 @@
-# ATP_MLOPS
-MLops project with DataScientest based on ATP matches.
-
-
-#Dockerisation
-
--Image api:
-
-Using the terminal go to folder api and run:
-docker image build . -t api_image:latest
-
--Data collection image
-
-Using the terminal, go to the folder Data_collection and run:
-docker image build . -t data_collection_image:latest
-
-
--Model training image
-
-Using the terminal, go to the folder Model_training folder and run:
-docker image build . -t model_training_image:latest
-
-
-
 
 -Docker compose run
 
