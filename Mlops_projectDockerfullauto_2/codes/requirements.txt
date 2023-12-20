@@ -1,4 +1,0 @@
-uvicorn
-gunicorn
-fastapi
-pytest

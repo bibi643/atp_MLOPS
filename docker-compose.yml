@@ -1,0 +1,41 @@
+version: "3.3"
+services:
+  data_collection:
+    build: 
+      context: ./codes/Data_collection
+      dockerfile: Dockerfile
+    container_name: data_collection_container
+    volumes:
+      - ./File_Data_Volume:/File_Data_Volume
+
+  model_training:
+    build: 
+      context: ./codes/Model_training
+      dockerfile: Dockerfile
+    container_name: model_training_container
+    volumes:
+      - ./File_Data_Volume:/File_Data_Volume
+    depends_on:
+      - data_collection
+
+  api:
+    build:
+      context: ./codes/api
+      dockerfile: Dockerfile
+    container_name: api_container
+    volumes:
+      - "./File_Data_Volume:/File_Data_Volume"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - model_training
+
+
+    
+    
+
+
+
+  
+  
+
