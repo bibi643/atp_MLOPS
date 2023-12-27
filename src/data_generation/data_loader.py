@@ -6,22 +6,18 @@ class DataHandler():
         self.path_new_data = "http://tennis-data.co.uk/2023/2023.xlsx"
         self.path_save = "File_Data_Volume/atp_data.csv"
 
-    def load_data(self):
+    def load_data(self, type : str ):
 
-        df = pd.read_csv(self.path_db, sep=',')
+        if type == "csv":
+            df = pd.read_csv(self.path_db, sep=',')
+
+        elif type =="excel":
+            df = pd.read_excel(self.path_new_data)
+
+        else:
+            raise ValueError("Type de données non pris en charge.")
+    
         return(df)
-
-    def add_data(self):
-
-        keeping_col = ['ATP', 'Location', 'Tournament', 'Date', 'Series', 'Court', 'Surface',
-                'Round', 'Best of', 'Winner', 'Loser', 'WRank', 'LRank', 'Wsets',
-                'Lsets', 'Comment', 'PSW', 'PSL', 'B365W', 'B365L']
-
-        df = pd.read_excel(self.path_new_data)
-
-        new_data = df[keeping_col]
-
-        return(new_data)
     
     def merge_data(self, df, new_data):
         """
